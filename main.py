@@ -15,21 +15,13 @@ from machine import I2C, Pin, RTC
 from bus_service import I2cAdapter
 from utime import sleep
 from pico_i2c_lcd import I2cLcd
-
-# import urequests as requests
-# import usocket as socket
 from simple import MQTTClient
 from secrets import Secrets
-
 gc.collect()   # Run a garbage collection like python
 rtc = RTC()
 a = utime.localtime()
 rtc.datetime((a[0], a[1], a[2], a[6], a[3], a[4], a[5], 0))
-print(a)
-del a
-
-if __name__ == '__main__':
-    
+if __name__ == '__main__':  
     # create LCD1602
     i2c0 = I2C(0, scl=Pin(13), sda=Pin(12), freq=100000)
     I2C_ADDR0 = i2c0.scan()[0]
@@ -40,7 +32,6 @@ if __name__ == '__main__':
     lcd.clear()
     lcd.move_to(0, 0)
     lcd.putstr("LCD Address:"+str(hex(I2C_ADDR0)))
-    
     # create object SCD41
     i2c1 = I2C(1, sda=Pin(14), scl=Pin(15), freq=100000)
     I2C_ADDR1 = i2c1.scan()[0]
@@ -49,7 +40,6 @@ if __name__ == '__main__':
     sensor.set_measurement(start=False, single_shot=False)
     SensorID = sensor.get_id()
     print("SCD Address:"+str(hex(I2C_ADDR1)))
-
     # Load login data from different file for safety reasons
     SSID = Secrets['SSID']
     PASS = Secrets['PassWord']
@@ -59,7 +49,6 @@ if __name__ == '__main__':
     password = Secrets['MQTTPass']
     port = Secrets['Port']
     topic = Secrets['Topic']
-
     # create network over wifi
     # Set country to avoid possible errors
     rp2.country('TH')
@@ -104,7 +93,6 @@ if __name__ == '__main__':
         pass
     else:
         print('Connected')
-        wlan.ifconfig(('10.99.96.8', '255.255.248.0', '10.99.103.254', '8.8.8.8'))
         ip = wlan.ifconfig()[0]
         print('IP Address :', ip)
         print('mac Address :', mac)
@@ -120,12 +108,10 @@ if __name__ == '__main__':
         Client = MQTTClient(ClientID, server, port, user, password, keepalive=60)
         Client.connect()
         return Client
-
     def reconnect():
         print('Failed to connect to MQTT broker, Reconnecting...')
         utime.sleep(5)
         Client.connect()
-
     try:
         Client = connect()
     except OSError as e:
@@ -142,7 +128,6 @@ if __name__ == '__main__':
         pass
     sleep(3)
     ID = hex(SensorID[0])[2:]+hex(SensorID[1])[2:]+hex(SensorID[2])[2:]
-
     print(f"Sensor ID 3  Word: {SensorID}")
     print(f"Sensor ID in HEX: {ID}")
     t_offs = 0.0
@@ -163,7 +148,6 @@ if __name__ == '__main__':
     lcd.move_to(0, 0)
     lcd.putstr(line1)
     sleep(3)
-
     # data ready
     if sensor.is_data_ready():
         print("Measurement data can be read!")  # Данные измерений могут быть прочитаны!
@@ -174,7 +158,6 @@ if __name__ == '__main__':
         print("The automatic self-calibration is ON!")
     else:
         print("The automatic self-calibration is OFF!")
-
     sensor.set_measurement(start=True, single_shot=False)
     wt = sensor.get_conversion_cycle_time()
     print("Periodic measurement started")
@@ -200,7 +183,6 @@ if __name__ == '__main__':
         lcd.move_to(0, 1)
         lcd.putstr(line2)
         utime.sleep_ms(wt)
-
     print(20*"*_")
     print("Reading using an iterator!")
     lcd.clear()
