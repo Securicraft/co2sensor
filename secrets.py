@@ -1,25 +1,12 @@
 #for Login internal broker
 Secrets = {
-   'SSID'      : 'MANEEWIFI',
-   'PassWord'  : 'm6045001',
-   'timezone'  : 'Asia/Bangkok',
-   'MQTTServer':'192.168.1.149',
-   'MQTTClient': 'PicoW',
-   'MQTTUser'  : 'pico',
-   'MQTTPass'  : 'picopassword',
+   'SSID'      : <your_SSID>,
+   'PassWord'  : <SSID_Password>,
+   'timezone'  : <your_Time Zone>,
+   'MQTTServer': <MQTT_Broker>,
+   'MQTTClient': <MQTT_ClientID>,
+   'MQTTUser'  : <MQTT_user>,
+   'MQTTPass'  : <MQTT_password>,
    'Port'      : 1883,
-   'Topic'     : 'FirstTopic'
+   'Topic'     : <MQTT_topic>
 }
-'''
-#for Login emqx.io
-Secrets = {
-   'SSID'      : 'ManeeWiFi',
-   'PassWord'  : 'm6045001',
-   'timezone'  : 'Asia/Bangkok',
-   'MQTTServer':'broker.emqx.io',
-   'MQTTClient': 'raspberry-pub-{time.time_ns()}',
-   'MQTTUser'  : 'emqx',
-   'MQTTPass'  : 'public',
-   'Port'      : 8883
-}
-'''
